@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto.Areas.Admin.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,12 +7,12 @@ using System.Web.Mvc;
 
 namespace Proyecto.Areas.Admin.Controllers
 {
-    public class HomeController : Controller
+    [Autenticado]
+    public class HabilidadesController : Controller
     {
-        // GET: Admin/Home
- public ActionResult Index()
+        // GET: Admin/Habilidades
+        public ActionResult Index()
         {
-            ViewBag.Algo = "MOISES MOJICA";
             return View();
         }
     }

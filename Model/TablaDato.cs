@@ -34,5 +34,27 @@ namespace Model
 
             }
         }
+
+
+        public List<TablaDato> Listar(string relacion)
+        {
+            var datos = new List<TablaDato>();
+
+            try
+            {
+                using(var ctx = new ProyectoContext())
+                {
+                    datos = ctx.TablaDato.OrderBy(x => x.Orden)
+                                        .Where(x => x.Relacion == relacion)
+                                        .ToList();
+                }
+
+            }   catch(Exception ex)
+            {
+                throw;
+            }
+            return datos;
+
+        }
     }
 }

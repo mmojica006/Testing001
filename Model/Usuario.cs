@@ -5,6 +5,12 @@ namespace Model
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
+    using Helper;
+    using System.Data.Entity;
+    using System.Data.Entity.Validation;
+    using System.Web;
+    using System.IO;
 
     [Table("Usuario")]
     public partial class Usuario
@@ -66,5 +72,118 @@ namespace Model
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Testimonio> Testimonio { get; set; }
+
+
+        //password deberia entrar 123456
+         public ResponseModel Acceder(string Email, string Password)
+        {
+            var rm = new ResponseModel();
+
+            try
+            {
+                using (var ctx = new ProyectoContext())
+                {
+                    Password = HashHelper.MD5(Password);
+                    var usuario = ctx.Usuario.Where(x => x.Email == Email)
+                                               .Where(x => x.Password == Password)
+                                               .SingleOrDefault();
+
+                    if (usuario != null)
+                    {
+                        SessionHelper.AddUserToSession(usuario.id.ToString());
+                        rm.setResponse ( true);
+                    }
+                    else
+                    {
+                        rm.setResponse(false, "Correo o contraseña incorrecta");
+                    }
+
+                }
+
+            }   catch(Exception)
+            {
+                throw;
+            }
+            return rm;
+
+
+        }
+
+         public Usuario Obtener (int id)
+        {
+            var usuario = new Usuario();
+
+            try
+            {
+                using (var ctx = new ProyectoContext())
+                {
+                    usuario = ctx.Usuario.Where(x => x.id == id)
+                                           .SingleOrDefault();
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return usuario;
+
+
+        }
+
+
+        public ResponseModel Guardar(HttpPostedFileBase Foto )
+        {
+            var rm = new ResponseModel();
+            try
+            {
+                using (var ctx = new ProyectoContext())
+                {
+
+                    ctx.Configuration.ValidateOnSaveEnabled = false;
+
+                    var eUsuario = ctx.Entry(this);
+                        eUsuario.State = EntityState.Modified;
+
+                    // Campos que queremos ignorar
+
+                    if(Foto != null)
+                    {
+                        // Nombre del archivo, es decir, lo renombramos para que no se repita nunca
+                        string archivo = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(Foto.FileName);
+
+                        // La ruta donde lo vamos guardar
+                        Foto.SaveAs(HttpContext.Current.Server.MapPath("~/uploads/" + archivo));
+
+                        // Establecemos en nuestro modelo el nombre del archivo
+                        this.Foto = archivo;
+
+                    }
+                    else eUsuario.Property(x => x.Foto).IsModified = false;
+
+                    if (this.Password==null)
+                    {
+                        eUsuario.Property(x => x.Password).IsModified = false;
+                    }
+
+                    ctx.SaveChanges();
+                    rm.setResponse(true);
+                }
+
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return rm;
+
+
+        }
+
     }
 }
