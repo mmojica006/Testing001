@@ -78,7 +78,7 @@ namespace Proyecto.Areas.Admin.Controllers
 
         public JsonResult Listar(AnexGRID grid, int tipo)
         {
-            return Json(experiencia.Listar(grid, tipo));
+            return Json(experiencia.Listar(grid, tipo,SessionHelper.GetUser()));
         }
     }
 }
