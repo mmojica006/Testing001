@@ -12,11 +12,17 @@ namespace Proyecto.Controllers
 
         private TablaDato tabladato = new TablaDato();
 
-        public int Index()
+        //public int Index()
+        //{
+
+
+        //    return tabladato.Conteo();
+        //}
+
+        public ActionResult     Index()
         {
 
-
-            return tabladato.Conteo();
+            return View();
         }
     }
 }
