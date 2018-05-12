@@ -109,7 +109,7 @@ namespace Model
 
         }
 
-         public Usuario Obtener (int id)
+         public Usuario Obtener (int id, bool includes = false)
         {
             var usuario = new Usuario();
 
@@ -117,8 +117,17 @@ namespace Model
             {
                 using (var ctx = new ProyectoContext())
                 {
-                    usuario = ctx.Usuario.Where(x => x.id == id)
-                                           .SingleOrDefault();
+                    if (!includes)
+                    {
+                        usuario = ctx.Usuario.Where(x => x.id == id)
+                                                                 .SingleOrDefault();
+                    }else
+                    {
+
+
+                    }
+
+                  
                 }
 
             }
