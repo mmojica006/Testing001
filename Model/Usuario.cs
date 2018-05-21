@@ -134,7 +134,7 @@ namespace Model
                     }
 
                     //Trayendo un registro adicional de manera manual, sin usar include
-                   // usuario.Pais = new TablaDato().Obtener("pais",usuario.Pais_id.ToString());
+                    usuario.Pais = new TablaDato().Obtener("pais",usuario.Pais_id.ToString());
 
                   
                 }

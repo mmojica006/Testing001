@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Proyecto.App_Start;
 
 namespace Proyecto.Controllers
 {
@@ -11,6 +12,8 @@ namespace Proyecto.Controllers
     {
 
         private TablaDato tabladato = new TablaDato();
+        private Usuario usuario = new Usuario();
+
 
         //public int Index()
         //{
@@ -22,7 +25,7 @@ namespace Proyecto.Controllers
         public ActionResult     Index()
         {
 
-            return View();
+            return View(usuario.Obtener(FrontOfficeStartUp.UsuarioVisualizando(),true));
         }
     }
 }
