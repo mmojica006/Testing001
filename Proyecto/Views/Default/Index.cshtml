@@ -42,11 +42,11 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col-lg-2">
-                    <b>Programación con PHP</b>
+                    <b>@e.Nombre</b>
                 </div>
                 <div class="col-lg-10">
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%"></div>
+                        <div class="progress-bar" role="progressbar" aria-valuenow="@e.Dominio" aria-valuemin="0" aria-valuemax="100" style="width: @e.Dominio%">@e.Dominio %</div>
                     </div>
                 </div>
             </div>
@@ -66,23 +66,21 @@
         Estudios realizados
     </h2>
 
-    foreach (var e in Model.Experiencia)
+    foreach (var e in Model.Experiencia.Where(x=>x.Tipo==2))
     {
+        <div class="list well well-sm">
 
-    
-            <div class="list well well-sm">
-
-                <div class="list-heading">
-                    @e.Nombre <small class="list-heading-date">@e.Desde - @(e.Hasta == null ? "Actualmente" : @e.Hasta)</small>
-                    <span class="list-heading-subtitle">@e.Titulo</span>
-                </div>
-
-                <div class="list-description">
-                    <p>@e.Descripcion</p>
-                </div>
-
+            <div class="list-heading">
+                @e.Nombre <small class="list-heading-date">@e.Desde - @(e.Hasta == null ? "Actualmente" : @e.Hasta)</small>
+                <span class="list-heading-subtitle">@e.Titulo</span>
             </div>
-        
+
+            <div class="list-description">
+                <p>@e.Descripcion</p>
+            </div>
+
+        </div>
+
     }
 }
 
@@ -122,27 +120,24 @@
 @if (Model.Testimonio.Count > 0)
 {
 
+    <div class="media">
+        <div class="media-body">
+            @foreach (var e in Model.Testimonio)
+            {
 
-    foreach (var e in Model.Testimonio)
-    {
-
-        <div class="media">
-            <div class="media-body">
-                <h4 class="media-heading">
-                    Jose Ramirez <small>Enviado el 2015-04-14</small>
-                </h4>
-                <div class="well well-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </div>
-                <h4 class="media-heading">
-                    Jose Ramirez <small>Enviado el 2015-04-14</small>
-                </h4>
-                <div class="well well-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </div>
+            <h4 class="media-heading">
+                @e.Nombre <small>Enviado el @e.Fecha</small>
+            </h4>
+            <div class="well well-sm">
+               @e.Comentario
             </div>
+            }
+     
+         
         </div>
-    }
+    </div>
+
+
 
 
 }
